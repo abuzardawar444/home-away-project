@@ -147,14 +147,25 @@ export const createPropertyAction = async (
   formData: FormData
 ): Promise<{ message: string }> => {
   const user = await getAuthUser();
+
   try {
     const rawData = Object.fromEntries(formData);
-    const file = formData.get('image') as File;
+    const file = formData.get("image") as File | null;
     console.log(rawData);
 
     const validatedFields = validateWithZodSchema(propertySchema, rawData);
-    const validatedFile = validateWithZodSchema(imageSchema, { image: file });
-    const fullPath = await uploadImage(validatedFile.image);
+
+    // Check if the file is provided
+    let fullPath;
+    if (file && file.size > 0) {
+      // Validate and upload provided image
+      const validatedFile = validateWithZodSchema(imageSchema, { image: file });
+      fullPath = await uploadImage(validatedFile.image);
+    } else {
+      // Use a default image if none is provided
+      fullPath =
+        "https://lqwsarshfucesldaurcz.supabase.co/storage/v1/object/public/home-away/1731233823187-cabin-4.jpg";
+    }
 
     await db.property.create({
       data: {
@@ -166,7 +177,8 @@ export const createPropertyAction = async (
   } catch (error) {
     return renderError(error);
   }
-  redirect('/');
+
+  redirect("/");
 };
 
 export const fetchProperties = async ({
