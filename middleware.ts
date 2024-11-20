@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 const isPublicRoute = createRouteMatcher(['/', '/properties(.*)']);
 const isAdminRoute = createRouteMatcher(["/admin(.*)", "/rentals/create"]);
-
+// commit
 export default clerkMiddleware((auth, req) => {
   console.log(auth().userId);
   const isAdminUser = auth().userId === process.env.ADMIN_USER_ID;
