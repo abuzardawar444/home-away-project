@@ -2,7 +2,7 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
 const isPublicRoute = createRouteMatcher(['/', '/properties(.*)']);
-const isAdminRoute = createRouteMatcher(['/admin(.*)']);
+const isAdminRoute = createRouteMatcher(["/admin(.*)", "/rentals/create"]);
 
 export default clerkMiddleware((auth, req) => {
   console.log(auth().userId);
