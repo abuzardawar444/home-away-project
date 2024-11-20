@@ -41,7 +41,7 @@ function LinksDropdown() {
         </SignedOut>
         <SignedIn>
           {links.map((link) => {
-            // Exclude "create rental" for non-admin users
+            // Exclude "create rental" for non-admin users here
             if (
               (link.label === "create rental" || link.label === "admin") &&
               !isAdminUser
